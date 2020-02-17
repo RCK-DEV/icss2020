@@ -2,6 +2,7 @@ package nl.han.ica.icss.generator;
 
 import nl.han.ica.icss.ast.*;
 
+// GE01, GE02
 public class Generator {
 
 	private final String NEWLINE = "\n";
