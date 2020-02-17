@@ -109,4 +109,21 @@ public class ASTListener extends ICSSBaseListener {
 	public void enterScalarLiteral(ICSSParser.ScalarLiteralContext ctx) {
 		currentContainer.peek().addChild(new ScalarLiteral(ctx.SCALAR().toString()));
 	}
+
+	@Override
+	public void enterVariableAssignment(ICSSParser.VariableAssignmentContext ctx) {
+		VariableAssignment variableAssignment = new VariableAssignment();
+		currentContainer.peek().addChild(variableAssignment);
+		currentContainer.push(variableAssignment);
+	}
+
+	@Override
+	public void exitVariableAssignment(ICSSParser.VariableAssignmentContext ctx) {
+		currentContainer.pop();
+	}
+
+	@Override
+	public void enterVariableReference(ICSSParser.VariableReferenceContext ctx) {
+		currentContainer.peek().addChild(new VariableReference(ctx.CAPITAL_IDENT().toString()));
+	}
 }

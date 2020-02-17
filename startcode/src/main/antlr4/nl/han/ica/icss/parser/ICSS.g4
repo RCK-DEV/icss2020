@@ -40,8 +40,10 @@ ASSIGNMENT_OPERATOR: ':=';
 
 //--- PARSER: ---
 
-stylesheet: styleRule*;
+stylesheet: (styleRule | variableAssignment)*;
 styleRule: tagSelector OPEN_BRACE selectorBody CLOSE_BRACE;
+variableAssignment: variableReference ASSIGNMENT_OPERATOR expression SEMICOLON;
+variableReference: CAPITAL_IDENT;
 tagSelector: idSelector | classSelector | elementSelector;
 idSelector: ID_IDENT;
 classSelector: CLASS_IDENT;
@@ -49,7 +51,7 @@ elementSelector: LOWER_IDENT;
 selectorBody:  declaration*;
 declaration: propertyName COLON expression SEMICOLON;
 propertyName: LOWER_IDENT;
-expression: literal;
+expression: literal | variableReference;
 literal: colorLiteral | pixelLiteral | percentageLiteral | boolLiteral | scalarLiteral;
 colorLiteral: COLOR;
 pixelLiteral: PIXELSIZE;
