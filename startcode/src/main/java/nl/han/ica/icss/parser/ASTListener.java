@@ -7,6 +7,9 @@ import nl.han.ica.icss.ast.literals.*;
 import nl.han.ica.icss.ast.selectors.ClassSelector;
 import nl.han.ica.icss.ast.selectors.IdSelector;
 import nl.han.ica.icss.ast.selectors.TagSelector;
+import nl.han.ica.icss.ast.operations.AddOperation;
+import nl.han.ica.icss.ast.operations.MultiplyOperation;
+import nl.han.ica.icss.ast.operations.SubtractOperation;
 
 /**
  * This class extracts the ICSS Abstract Syntax Tree from the Antlr Parse tree.
@@ -125,5 +128,42 @@ public class ASTListener extends ICSSBaseListener {
 	@Override
 	public void enterVariableReference(ICSSParser.VariableReferenceContext ctx) {
 		currentContainer.peek().addChild(new VariableReference(ctx.CAPITAL_IDENT().toString()));
+	}
+
+
+	@Override
+	public void enterMultiplyOperation(ICSSParser.MultiplyOperationContext ctx) {
+		MultiplyOperation multiplyOperation = new MultiplyOperation();
+		currentContainer.peek().addChild(multiplyOperation);
+		currentContainer.push(multiplyOperation);
+	}
+
+	@Override
+	public void exitMultiplyOperation(ICSSParser.MultiplyOperationContext ctx) {
+		currentContainer.pop();
+	}
+
+	@Override
+	public void enterAddOperation(ICSSParser.AddOperationContext ctx) {
+		AddOperation addOperation = new AddOperation();
+		currentContainer.peek().addChild(addOperation);
+		currentContainer.push(addOperation);
+	}
+
+	@Override
+	public void exitAddOperation(ICSSParser.AddOperationContext ctx) {
+		currentContainer.pop();
+	}
+
+	@Override
+	public void enterSubtractOperation(ICSSParser.SubtractOperationContext ctx) {
+		SubtractOperation subtractOperation = new SubtractOperation();
+		currentContainer.peek().addChild(subtractOperation);
+		currentContainer.push(subtractOperation);
+	}
+
+	@Override
+	public void exitSubtractOperation(ICSSParser.SubtractOperationContext ctx) {
+		currentContainer.pop();
 	}
 }

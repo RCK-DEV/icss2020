@@ -42,16 +42,20 @@ ASSIGNMENT_OPERATOR: ':=';
 
 stylesheet: (styleRule | variableAssignment)*;
 styleRule: tagSelector OPEN_BRACE selectorBody CLOSE_BRACE;
-variableAssignment: variableReference ASSIGNMENT_OPERATOR expression SEMICOLON;
+variableAssignment: variableReference ASSIGNMENT_OPERATOR (expression | operation) SEMICOLON;
 variableReference: CAPITAL_IDENT;
 tagSelector: idSelector | classSelector | elementSelector;
 idSelector: ID_IDENT;
 classSelector: CLASS_IDENT;
 elementSelector: LOWER_IDENT;
-selectorBody:  declaration*;
-declaration: propertyName COLON expression SEMICOLON;
+selectorBody:  declaration* variableAssignment*;
+declaration: propertyName COLON (expression | operation) SEMICOLON;
 propertyName: LOWER_IDENT;
 expression: literal | variableReference;
+operation: expression                   # literalExpression
+    | operation MUL operation           # multiplyOperation
+    | operation PLUS operation          # addOperation
+    | operation MIN operation           # subtractOperation;
 literal: colorLiteral | pixelLiteral | percentageLiteral | boolLiteral | scalarLiteral;
 colorLiteral: COLOR;
 pixelLiteral: PIXELSIZE;
